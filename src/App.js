@@ -8,6 +8,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import routes from "./routes";
+import OnlineUsers from './components/OnlineUsers'
 
 function App() {
   const { authIsReady, user } = useAuthContext();
@@ -22,6 +23,7 @@ function App() {
             <Navbar />
               {routing}
           </div>
+          {user && <OnlineUsers />}
         </>
       ) : (
         <h1>Loading</h1>
