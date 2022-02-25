@@ -1,33 +1,33 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 // styles
 import "./App.css";
 
-// pages & components
-import Dashboard from "./pages/dashboard/Dashboard";
-import Create from "./pages/create/Create";
-import Login from "./pages/login/Login";
-import Signup from "./pages/signup/Signup";
-import Project from "./pages/project/Project";
+// components
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import routes from "./routes";
 
 function App() {
+  const { authIsReady, user } = useAuthContext();
+  const routing = useRoutes(routes(user));
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Sidebar />
-        <div className="container">
-          <Navbar />
-          <Routes>
-            <Route exact path="/" element={<Dashboard />} />
-            <Route path="/create" element={<Create />} />
-            <Route path="/projects/:id" element={<Project />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      {authIsReady ? (
+        <>
+          <Sidebar />
+          <div className="container">
+            <Navbar />
+            {/* <BrowserRouter> */}
+              {routing}
+            {/* </BrowserRouter> */}
+          </div>
+        </>
+      ) : (
+        <h1>Loading</h1>
+      )}
     </div>
   );
 }
